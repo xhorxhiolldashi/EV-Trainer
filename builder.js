@@ -4,8 +4,6 @@ populateDropdown();
 
 // Dropdown to select
 let dropdown = document.getElementById("monDropdown");
-// Number of pokedex entries
-let dexEntries = 0;
 // The dropdown
 let monDropdown = document.getElementById('monDropdown');
 // Startup window
@@ -14,6 +12,13 @@ let startup = document.getElementById('loadupWindow');
 let evWindow = document.getElementById('evWindow');
 // What are we training prompt
 let trainingOptions = document.getElementById('trainOptionButtons');
+// Base stats window
+let baseStatsWindow = document.getElementById('baseStats');
+// Array for obtained base stat values
+    // it goes hp, atk, def, spa, spd, spe
+    let statsArr = [
+        0,0,0,0,0,0
+    ];
 
 // Button for user to confirm this pokemon
 // When selected, get rid of dropdown and display the pokemon
@@ -36,7 +41,7 @@ confirmButton.addEventListener('click',dropdownOptionSelected);
 function dropdownOptionSelected(){
     // Gets the selected dropdown element
     let dropdownMon = monDropdown.value;
-    console.log(dropdownMon + "element value");
+    console.log(dropdownMon + " element value");
     let pokeName = dropdownMon.toString();
     console.log(pokeName + " string");
     // Call API to get this Pokemon name object
@@ -64,10 +69,56 @@ function dropdownOptionSelected(){
         buildMon.innerHTML = buildMonsName;
         // display the Pokemon's front-facing sprite
         let pokeImage = document.getElementById('replaceWithSprite');
-        pokeImage.src = data.sprites.other.showdown.front_default;
+        pokeImage.src = data.sprites.front_default;
         // make it cry
         let cry = new Audio(data.cries.latest);
         cry.play();
+        // populate array with its stats
+        statsArr = [
+            data.stats[0].base_stat, // hp
+            data.stats[1].base_stat, // atk
+            data.stats[2].base_stat, // def
+            data.stats[3].base_stat, // spa
+            data.stats[4].base_stat, // spd
+            data.stats[5].base_stat // spe
+        ]
+        let index = 0; 
+        // print out base values
+        for(let stats of statsArr){    
+            let statAbbreviation = "";
+            switch(index){
+                case 0:
+                  statAbbreviation = "HP";
+                  index++;
+                  break;
+                case 1:
+                  statAbbreviation = "Atk";
+                  index++;
+                  break;
+                case 2:
+                   statAbbreviation = "Def";
+                   index++;
+                  break;
+                case 3:
+                  statAbbreviation = "Sp. Atk";
+                  index++;
+                  break;
+                case 4:
+                  statAbbreviation = "Sp. Def";
+                  index++;
+                  break;
+                case 5:
+                  statAbbreviation = "Speed";
+                  break;
+                default:
+                    statAbbreviation = "???";
+              }
+            console.log(stats);
+            let stat = document.createElement('p');
+            stat.innerHTML = stats + " " + statAbbreviation; 
+            baseStatsWindow.appendChild(stat);
+        }
+
     })
     .catch(error => {
         console.error(error);
