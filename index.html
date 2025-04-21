@@ -44,9 +44,6 @@
         <!-- Dropdown for selecting pokemon -->
         <select name= "monDropdown" id = "monDropdown">
             <option id = "placeholder" value = "default">--Please choose a Pokemon--</option>
-            <option value = "ex1">Example1</option>
-            <option value = "ex2">Example2</option>
-            <option value = "ex3">Example3</option>
         </select>
 
         <input type = "button" value = "Lets Build" id = "letsBuild" name = "letsBuild">
@@ -55,17 +52,17 @@
     </section>
 
     <section id = "evWindow" style = "display:none">
-
-        <div style="display: flex; justify-content: center; align-items: center; height: 80vh;">
-            <div style="text-align: center;">
-              Random text...
-              <p id = "replaceWithMon">PLACEHOLDER</p>
+        <div id = "evChartAndMons">
+        <!-- name -->
+        <p id = "replaceWithMon">PLACEHOLDER</p>
+        <!-- chart, ignoring until I figure out chart.js-->
+        <canvas id="nothingYet"></canvas>
+        <!-- a temporary solution since I can't figure out chart.js-->
+         <span id = "baseStats"></span>
+        <!-- sprite -->
+        <img id = "replaceWithSprite">
+        </div>
         
-            <img id = "replaceWithSprite">
-            </div>
-          </div>
-        
-
 
     </section>
     
