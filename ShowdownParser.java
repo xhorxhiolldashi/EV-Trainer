@@ -30,12 +30,20 @@ public class ShowdownParser {
                 String name = "name: \"";
                 // Get name
                 if(currLine.contains("name: \"")){
+                    // Hyphenate if applicable
+                    if(currLine.contains(" ")){
+                    String out = currLine.replace(" ", "-");
+                    pokemonName = out.trim();
+                } else {
                     pokemonName = currLine.trim();
+                }     
                     pokemonName = pokemonName.substring(7);
                     pokemonName = pokemonName.substring(0);
                     String copy = pokemonName;
                     copy = copy.substring(0, copy.length()-2);
-                    System.out.println(copy);
+                
+                    
+                    System.out.println(copy); 
                     pw.println(copy);
                 }
             }
