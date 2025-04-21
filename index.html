@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EV Trainer</title>
+
+    <!-- Jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+     <!-- Select2 Imports-->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- ensure DOM is loaded, for Select2 -->
+    <script> 
+        $(document).ready(function(){
+            $('#monDropdown').select2();
+        });
+    </script>
+
+    <script src = "builder.js" defer></script>
+
+</head>
+<body>
+
+    <!-- RENAME ME TO BUILDER -->
+
+<!-- Header -->
+ <section id = "titleEV">
+    <p> Pokemon EV Trainer </p>
+    <p> Your go-to for when you need to train a Pokemon's Effort Values (EVs) </p>
+    <p> For a brief tutorial on the tool and/or an explanation of EVs, 
+        click <a href = "/tutorial">here</a>.</p>
+    </section>
+    
+    <!-- This section will be in the center. This section will be 
+     replaced once the dropdown or save button is fulfilled by another 
+     section containing the pokemon and its stats and stuff -->
+    <section id = "loadupWindow" style = "display:block">
+        <p> Choose a Pokemon from the dropdown to start from scratch, or load a saved Pokemon.</p>
+    
+        <!-- Dropdown for selecting pokemon -->
+        <select name= "monDropdown" id = "monDropdown">
+            <option id = "placeholder" value = "default">--Please choose a Pokemon--</option>
+            <option value = "ex1">Example1</option>
+            <option value = "ex2">Example2</option>
+            <option value = "ex3">Example3</option>
+        </select>
+
+        <input type = "button" value = "Lets Build" id = "letsBuild" name = "letsBuild">
+        <input type = "button" value = "Load Saved Pokemon" id = "loadSaved" name = "loadSavedButton">
+    
+    </section>
+
+    <section id = "evWindow" style = "display:none">
+
+        <div style="display: flex; justify-content: center; align-items: center; height: 80vh;">
+            <div style="text-align: center;">
+              Random text...
+              <p id = "replaceWithMon">PLACEHOLDER</p>
+        
+            <img id = "replaceWithSprite">
+            </div>
+          </div>
+        
+
+
+    </section>
+    
+    <!-- This section will always be right under the loadup window and 
+     the pokemon window-->
+    
+    <!-- Buttons for choosing what EV we are focusing on right now -->
+    
+    <!-- MAYBE: When an option is clicked, replace the entire button set with
+     a "Go Back" button so they can go and train something else-->
+     
+                                    <!-- display none hides this entire section
+                                    will be updated with js when a mon is chosen-->
+    <section id = "trainOptionButtons" style = "display:none">
+    <p> What are we training? </p>
+    
+    <input type = "button" value = "Health EVs" id = "chooseHealth" name = "chooseHealthButton">
+    <input type = "button" value = "Attack EVs" id = "chooseAtk" name = "chooseAtkButton">
+    <input type = "button" value = "Defense EVs" id = "chooseDef" name = "chooseDefButton">
+    <input type = "button" value = "Special Attack EVs" id = "chooseSpa" name = "chooseSpaButton">
+    <input type = "button" value = "Special Defense EVs" id = "chooseSpDef" name = "chooseSpDefButton">
+    <input type = "button" value = "Speed EVs" id = "chooseSpe" name = "chooseSpeButton">
+    </section>
+    
+    
+    
+    
+    
+    
+
+</body>
+</html>
+
+
+
