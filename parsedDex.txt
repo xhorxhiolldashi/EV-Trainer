@@ -132,8 +132,8 @@ Slowbro-Mega
 Slowbro-Galar
 Magnemite
 Magneton
-Farfetch\u2019d
-Farfetch\u2019d-Galar
+Farfetchd
+Farfetchd-Galar
 Doduo
 Dodrio
 Seel
@@ -184,8 +184,8 @@ Goldeen
 Seaking
 Staryu
 Starmie
-Mr. Mime
-Mr. Mime-Galar
+Mr.-Mime
+Mr.-Mime-Galar
 Scyther
 Jynx
 Electabuzz
@@ -564,7 +564,7 @@ Skuntank
 Bronzor
 Bronzong
 Bonsly
-Mime Jr.
+Mime-Jr.
 Happiny
 Chatot
 Spiritomb
@@ -854,7 +854,7 @@ Vivillon-Fancy
 Vivillon-Pokeball
 Litleo
 Pyroar
-Flabe\u0301be\u0301
+Flabebe
 Floette
 Floette-Eternal
 Florges
@@ -988,7 +988,7 @@ Golisopod
 Sandygast
 Palossand
 Pyukumuku
-Type: Null
+Type:-Null
 Silvally
 Silvally-Bug
 Silvally-Dark
@@ -1024,10 +1024,10 @@ Jangmo-o
 Hakamo-o
 Kommo-o
 Kommo-o-Totem
-Tapu Koko
-Tapu Lele
-Tapu Bulu
-Tapu Fini
+Tapu-Koko
+Tapu-Lele
+Tapu-Bulu
+Tapu-Fini
 Cosmog
 Cosmoem
 Solgaleo
@@ -1129,8 +1129,8 @@ Grimmsnarl-Gmax
 Obstagoon
 Perrserker
 Cursola
-Sirfetch\u2019d
-Mr. Rime
+Sirfetchd
+Mr-Rime
 Runerigus
 Milcery
 Alcremie
@@ -1273,18 +1273,18 @@ Farigiraf
 Dudunsparce
 Dudunsparce-Three-Segment
 Kingambit
-Great Tusk
-Scream Tail
-Brute Bonnet
-Flutter Mane
-Slither Wing
-Sandy Shocks
-Iron Treads
-Iron Bundle
-Iron Hands
-Iron Jugulis
-Iron Moth
-Iron Thorns
+Great-Tusk
+Scream-Tail
+Brute-Bonnet
+Flutter-Mane
+Slither-Wing
+Sandy-Shocks
+Iron-Treads
+Iron-Bundle
+Iron-Hands
+Iron-Jugulis
+Iron-Moth
+Iron-Thorns
 Frigibax
 Arctibax
 Baxcalibur
@@ -1295,12 +1295,12 @@ Wo-Chien
 Chien-Pao
 Ting-Lu
 Chi-Yu
-Roaring Moon
-Iron Valiant
+Roaring-Moon
+Iron-Valiant
 Koraidon
 Miraidon
-Walking Wake
-Iron Leaves
+Walking-Wake
+Iron-Leaves
 Dipplin
 Poltchageist
 Poltchageist-Artisan
@@ -1319,10 +1319,10 @@ Ogerpon-Hearthflame-Tera
 Ogerpon-Cornerstone-Tera
 Archaludon
 Hydrapple
-Gouging Fire
-Raging Bolt
-Iron Boulder
-Iron Crown
+Gouging-Fire
+Raging-Bolt
+Iron-Boulder
+Iron-Crown
 Terapagos
 Terapagos-Terastal
 Terapagos-Stellar
