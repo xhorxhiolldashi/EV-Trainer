@@ -12,6 +12,8 @@ let startup = document.getElementById('loadupWindow');
 let evWindow = document.getElementById('evWindow');
 // What are we training prompt
 let trainingOptions = document.getElementById('trainOptionButtons');
+// Unhide the name
+let replaceWithMon = document.getElementById('replaceWithMon');
 // Base stats window
 let baseStatsWindow = document.getElementById('baseStats');
 // Array for obtained base stat values
@@ -19,6 +21,38 @@ let baseStatsWindow = document.getElementById('baseStats');
     let statsArr = [
         0,0,0,0,0,0
     ];
+// Chart.js
+  const ctx = document.getElementById('evs');
+  new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: ['HP', 'Atk', 'Def', 'Spe', 'Sp. Def', 'Sp. Atk'],
+      datasets: [{
+        label: 'Effort Values',
+        data: [0, 100, 91, 252, 0, 0],
+        borderWidth: 1
+      }]
+    },
+    options: {
+        // Chart.js has a bug where it mysteriously starts to
+        // shrink the graph, ironically the solution is to set
+        // aspect ratio to false
+        maintainAspectRatio: false, 
+      scales: {
+        r: {
+            max: 252,
+            grid: {
+                display: false
+            },
+            ticks: {
+                stepSize: 252
+            },
+
+        }
+        
+      }
+    }
+  });
 
 // Button for user to confirm this pokemon
 // When selected, get rid of dropdown and display the pokemon
@@ -59,6 +93,9 @@ function dropdownOptionSelected(){
         evWindow.style.display = "block";
         startup.style.display = "none";
         trainingOptions.style.display = "block";
+        replaceWithMon.style.display = "block";
+        evs.style.display = "block";
+
         // Get the text element that shows this Pokemon's name and
         // replace it with the name of the chosen Pokemon
         let buildMon = document.getElementById('replaceWithMon');
@@ -67,9 +104,16 @@ function dropdownOptionSelected(){
         let uppercasingFirstLetter = buildMonsName.substring(0,1).toUpperCase();
         buildMonsName = uppercasingFirstLetter + buildMonsName.substring(1);
         buildMon.innerHTML = buildMonsName;
+        // get the animated version if it exists, if not then get the
+        // regular front-facing sprite
+        let pokeImage;
+        pokeImage = document.getElementById('replaceWithSprite');
+        if(data.sprites.other.showdown.front_default != null){
+            pokeImage.src = data.sprites.other.showdown.front_default;
+        } else {
         // display the Pokemon's front-facing sprite
-        let pokeImage = document.getElementById('replaceWithSprite');
         pokeImage.src = data.sprites.front_default;
+        }
         // make it cry
         let cry = new Audio(data.cries.latest);
         cry.play();

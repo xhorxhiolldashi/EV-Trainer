@@ -12,6 +12,8 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <!-- ensure DOM is loaded, for Select2 -->
     <script> 
@@ -25,12 +27,13 @@
 </head>
 <body>
 
+
     <!-- RENAME ME TO BUILDER -->
 
 <!-- Header -->
- <section id = "titleEV">
-    <p> Pokemon EV Trainer </p>
-    <p> Your go-to for when you need to train a Pokemon's Effort Values (EVs) </p>
+ <section id = "titleEV" class="text-center">
+    <p class="mb-4"> Creature EV Trainer </p>
+    <p class="mb-2"> Your go-to for when you need to train a creature's Effort Values (EVs) </p>
     <p> For a brief tutorial on the tool and/or an explanation of EVs, 
         click <a href = "/tutorial">here</a>.</p>
     </section>
@@ -38,33 +41,36 @@
     <!-- This section will be in the center. This section will be 
      replaced once the dropdown or save button is fulfilled by another 
      section containing the pokemon and its stats and stuff -->
-    <section id = "loadupWindow" style = "display:block">
-        <p> Choose a Pokemon from the dropdown to start from scratch, or load a saved Pokemon.</p>
+    <section id = "loadupWindow" style = "display:block" class="text-center">
+        <p> Choose a creature from the dropdown to start from scratch, or load a saved creature.</p>
     
         <!-- Dropdown for selecting pokemon -->
-        <select name= "monDropdown" id = "monDropdown">
-            <option id = "placeholder" value = "default">--Please choose a Pokemon--</option>
+        <select name= "monDropdown" id = "monDropdown" class="form-control" style = "width: 50vw">
+            <option id = "placeholder" value = "default">--Please choose a creature--</option>
         </select>
 
-        <input type = "button" value = "Lets Build" id = "letsBuild" name = "letsBuild">
-        <input type = "button" value = "Load Saved Pokemon" id = "loadSaved" name = "loadSavedButton">
+        <div>
+        <input type = "button" value = "Lets Build" id = "letsBuild" name = "letsBuild" class = "btn btn-primary">
+        <input type = "button" value = "Load Saved Pokemon" id = "loadSaved" name = "loadSavedButton" class="btn btn-secondary">
+        </div>
     
+    </section>
+    <section id = "evChart">
+        <canvas id="evs" style = "display:none"></canvas>
     </section>
 
     <section id = "evWindow" style = "display:none">
         <div id = "evChartAndMons">
         <!-- name -->
-        <p id = "replaceWithMon">PLACEHOLDER</p>
-        <!-- chart, ignoring until I figure out chart.js-->
-        <canvas id="nothingYet"></canvas>
-        <!-- a temporary solution since I can't figure out chart.js-->
-         <span id = "baseStats"></span>
+        <p id = "replaceWithMon" class="p-2">PLACEHOLDER</p>
+        <!-- stats to display -->
+         <span id = "baseStats" class="p-2"></span>
         <!-- sprite -->
-        <img id = "replaceWithSprite">
+        <img id = "replaceWithSprite" class="p-2">
         </div>
-        
-
     </section>
+
+    
     
     <!-- This section will always be right under the loadup window and 
      the pokemon window-->
@@ -76,8 +82,8 @@
      
                                     <!-- display none hides this entire section
                                     will be updated with js when a mon is chosen-->
-    <section id = "trainOptionButtons" style = "display:none">
-    <p> What are we training? </p>
+    <section id = "trainOptionButtons" style = "display: none">
+    <p> What will you train? </p>
     
     <input type = "button" value = "Health EVs" id = "chooseHealth" name = "chooseHealthButton">
     <input type = "button" value = "Attack EVs" id = "chooseAtk" name = "chooseAtkButton">
