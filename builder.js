@@ -16,6 +16,8 @@ let trainingOptions = document.getElementById('trainOptionButtons');
 let replaceWithMon = document.getElementById('replaceWithMon');
 // Base stats window
 let baseStatsWindow = document.getElementById('baseStats');
+// Chart container
+let evChart = document.getElementById('evChart');
 // Array for obtained base stat values
     // it goes hp, atk, def, spa, spd, spe
     let statsArr = [
@@ -23,15 +25,17 @@ let baseStatsWindow = document.getElementById('baseStats');
     ];
 // Chart.js
   const ctx = document.getElementById('evs');
-  new Chart(ctx, {
+  let statChart = new Chart(ctx, {
     type: 'radar',
     data: {
       labels: ['HP', 'Atk', 'Def', 'Spe', 'Sp. Def', 'Sp. Atk'],
-      datasets: [{
+      datasets: [
+        {
         label: 'Effort Values',
-        data: [0, 100, 91, 252, 0, 0],
+        data: [252, 252, 0, 0, 4, 0],
         borderWidth: 1
-      }]
+      }
+      ]
     },
     options: {
         // Chart.js has a bug where it mysteriously starts to
@@ -40,16 +44,15 @@ let baseStatsWindow = document.getElementById('baseStats');
         maintainAspectRatio: false, 
       scales: {
         r: {
-            max: 252,
+            max: 255,
             grid: {
                 display: false
             },
             ticks: {
-                stepSize: 252
+                stepSize: 252,
+                display: false
             },
-
         }
-        
       }
     }
   });
@@ -94,7 +97,9 @@ function dropdownOptionSelected(){
         startup.style.display = "none";
         trainingOptions.style.display = "block";
         replaceWithMon.style.display = "block";
-        evs.style.display = "block";
+        evChart.style.display = "flex";
+        evChart.style.justifyContent = "center";
+        
 
         // Get the text element that shows this Pokemon's name and
         // replace it with the name of the chosen Pokemon
@@ -103,7 +108,7 @@ function dropdownOptionSelected(){
         // Uppercasing first letter here
         let uppercasingFirstLetter = buildMonsName.substring(0,1).toUpperCase();
         buildMonsName = uppercasingFirstLetter + buildMonsName.substring(1);
-        buildMon.innerHTML = buildMonsName;
+        buildMon.textContent = buildMonsName;
         // get the animated version if it exists, if not then get the
         // regular front-facing sprite
         let pokeImage;
@@ -159,9 +164,16 @@ function dropdownOptionSelected(){
               }
             console.log(stats);
             let stat = document.createElement('p');
-            stat.innerHTML = stats + " " + statAbbreviation; 
+            stat.textContent = stats + " " + statAbbreviation; 
             baseStatsWindow.appendChild(stat);
         }
+            // push base stats
+            statChart.data.datasets.push({
+                label: 'Base Stat Values',
+                data: [statsArr[0], statsArr[1], statsArr[2], statsArr[5], statsArr[4], statsArr[3]],
+                borderWidth: 1,
+                backgroundColor: 'rgba(255, 251, 16, 0.49)'
+            });
 
     })
     .catch(error => {
