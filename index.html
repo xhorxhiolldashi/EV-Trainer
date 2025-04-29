@@ -32,8 +32,8 @@
 
 <!-- Header -->
  <section id = "titleEV" class="text-center">
-    <p class="mb-4"> Creature EV Trainer </p>
-    <p class="mb-2"> Your go-to for when you need to train a creature's Effort Values (EVs) </p>
+    <p class="mb-4"> Pokemon EV Trainer </p>
+    <p class="mb-2"> Your go-to for when you need to train a Pokemon's Effort Values (EVs) </p>
     <p> For a brief tutorial on the tool and/or an explanation of EVs, 
         click <a href = "/tutorial">here</a>.</p>
     </section>
@@ -42,11 +42,11 @@
      replaced once the dropdown or save button is fulfilled by another 
      section containing the pokemon and its stats and stuff -->
     <section id = "loadupWindow" style = "display:block" class="text-center">
-        <p> Choose a creature from the dropdown to start from scratch, or load a saved creature.</p>
+        <p> Choose a Pokemon from the dropdown to start from scratch, or load a saved Pokemon.</p>
     
         <!-- Dropdown for selecting pokemon -->
-        <select name= "monDropdown" id = "monDropdown" class="form-control" style = "width: 50vw">
-            <option id = "placeholder" value = "default">--Please choose a creature--</option>
+        <select name= "monDropdown" id = "monDropdown" style = "width: 50vw">
+            <option id = "placeholder" value = "default">--Please choose a Pokemon--</option>
         </select>
 
         <div>
@@ -55,10 +55,12 @@
         </div>
     
     </section>
-    <section id = "evChart">
-        <canvas id="evs" style = "display:none"></canvas>
+    <section id = "evChart" style = "display: none;">
+        <canvas id="evs"></canvas>
     </section>
 
+    <div></div>
+    <!-- section displaying pokemon name and its stats-->
     <section id = "evWindow" style = "display:none">
         <div id = "evChartAndMons">
         <!-- name -->
@@ -69,9 +71,7 @@
         <img id = "replaceWithSprite" class="p-2">
         </div>
     </section>
-
-    
-    
+ 
     <!-- This section will always be right under the loadup window and 
      the pokemon window-->
     
