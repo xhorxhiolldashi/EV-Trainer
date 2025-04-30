@@ -31,9 +31,9 @@
     <!-- RENAME ME TO BUILDER -->
 
 <!-- Header -->
- <section id = "titleEV" class="text-center">
-    <p class="mb-4"> Pokemon EV Trainer </p>
-    <p class="mb-2"> Your go-to for when you need to train a Pokemon's Effort Values (EVs) </p>
+ <section id = "titleEV">
+    <p> Pokemon EV Trainer </p>
+    <p> Your go-to for when you need to train a Pokemon's Effort Values (EVs) </p>
     <p> For a brief tutorial on the tool and/or an explanation of EVs, 
         click <a href = "/tutorial">here</a>.</p>
     </section>
@@ -41,7 +41,7 @@
     <!-- This section will be in the center. This section will be 
      replaced once the dropdown or save button is fulfilled by another 
      section containing the pokemon and its stats and stuff -->
-    <section id = "loadupWindow" style = "display:block" class="text-center">
+    <section id = "loadupWindow" style = "display:block">
         <p> Choose a Pokemon from the dropdown to start from scratch, or load a saved Pokemon.</p>
     
         <!-- Dropdown for selecting pokemon -->
@@ -77,7 +77,7 @@
     
     <!-- Buttons for choosing what EV we are focusing on right now -->
     
-    <!-- MAYBE: When an option is clicked, replace the entire button set with
+    <!-- When an option is clicked, replace the entire button set with
      a "Go Back" button so they can go and train something else-->
      
                                     <!-- display none hides this entire section
@@ -92,10 +92,9 @@
     <input type = "button" value = "Special Defense EVs" id = "chooseSpDef" name = "chooseSpDefButton">
     <input type = "button" value = "Speed EVs" id = "chooseSpe" name = "chooseSpeButton">
     </section>
-    
-    
-    
-    
+
+    <!-- tables created by training buttons will be added here-->
+    <span id = "addTables" style = "display:block"></span>
     
     
 
