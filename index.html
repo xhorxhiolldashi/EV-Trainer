@@ -19,6 +19,7 @@
     <script> 
         $(document).ready(function(){
             $('#monDropdown').select2();
+            $('#battleDropdown').select2();
         });
     </script>
 
@@ -32,8 +33,7 @@
 
 <!-- Header -->
  <section id = "titleEV">
-    <p> Pokemon EV Trainer </p>
-    <p> Your go-to for when you need to train a Pokemon's Effort Values (EVs) </p>
+    <p> EV Trainer </p>
     <p> For a brief tutorial on the tool and/or an explanation of EVs, 
         click <a href = "/tutorial">here</a>.</p>
     </section>
@@ -56,8 +56,11 @@
     
     </section>
     <section id = "evChart" style = "display: none;">
-        <canvas id="evs"></canvas>
+        <canvas id="evs" style="max-height: 65vh"></canvas>
     </section>
+
+    <!-- sprite -->
+    <img id = "replaceWithSprite" style = "display: flex; justify-content: center;">
 
     <div></div>
     <!-- section displaying pokemon name and its stats-->
@@ -67,8 +70,6 @@
         <p id = "replaceWithMon" class="p-2">PLACEHOLDER</p>
         <!-- stats to display -->
          <span id = "baseStats" class="p-2"></span>
-        <!-- sprite -->
-        <img id = "replaceWithSprite" class="p-2">
         </div>
     </section>
  
@@ -83,7 +84,7 @@
                                     <!-- display none hides this entire section
                                     will be updated with js when a mon is chosen-->
     <section id = "trainOptionButtons" style = "display: none">
-    <p> What will you train? </p>
+    <p id = "whatTrain"> What will you train? </p>
     
     <input type = "button" value = "Health EVs" id = "chooseHealth" name = "chooseHealthButton">
     <input type = "button" value = "Attack EVs" id = "chooseAtk" name = "chooseAtkButton">
@@ -93,9 +94,66 @@
     <input type = "button" value = "Speed EVs" id = "chooseSpe" name = "chooseSpeButton">
     </section>
 
-    <!-- tables created by training buttons will be added here-->
-    <span id = "addTables" style = "display:block"></span>
+    <!-- Effort tables-->
+     <div id = "evContainer" style = "display: none;">
+    <h2 id = "evTableHeader">Items</h2>
+    <table id = "evTable">
+      <thead>
+        <tr>
+          <th scope="col" id = "berryCol">Feed RESPECTIVE_BERRY (-10 EVs)</th>
+          <th scope="col" id = "featherCol">Use RESPECTIVE_FEATHER (+1 EVs)</th>
+          <th scope="col" id = "vitaminCol">Use RESPECTIVE_VITAMIN (+10 EVs)</th>
+          <th scope="col" id = "powerItemCol">Equip RESPECTIVE_POWER_ITEM (+8 EVs in Battle)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+            <td>
+              <input type = "button" id = "feedBerryButton" value = "Feed Berry">
+            </td>
+            <td>
+                <input type = "button" id = "useFeatherButton" value = "Use Feather">
+            </td>
+            <td>
+                <input type = "button" id = "useVitaminButton" value = "Use Vitamin">
+            </td>
+            <td>
+                <input type = "button" id = "equipToggle" class = "btn-primary" value = "Equip Power Item">
+            </td>
+          </tr>
+      </tbody>
+    </table>
+    </div>
     
+    <div id = "battleContainer" style = "display: none;">
+    <!-- dropdown to select who to add to the battle table here-->
+    <!-- Battle table-->
+    <h2>Battles</h2>
+    <table id = "battleTable" style = "display: none">
+      <thead>
+        <tr>
+          <th scope="col">Defeat PLACEHOLDER (+NUM_EVS EVs)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <select name= "battleDropdown" id = "battleDropdown" style = "width: 50vw">
+            <option id = "placeholder2" value = "default">--Choose Opponent's EV Yield--</option>
+            <option id = "yield3" value = "3">3 EVs</option>
+            <option id = "yield2" value = "2">2 EVs</option>
+            <option id = "yield1" value = "1">1 EVs</option>
+            <input type = "button" id = "knockoutButton" value = "Defeat!">
+        </select>
+      </tbody>
+    </table>
+    </div>
+
+    <input type = "button" value = "Go Back to EV Selection" style = "display:none" id = "goBack" name = "backButton">
+
+    
+
+
+
+  
     
 
 </body>
