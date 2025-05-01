@@ -1,7 +1,7 @@
 "use strict";
+
 // Populate dropdown immediately upon site load
 populateDropdown();
-
 // Dropdown to select
 let dropdown = document.getElementById("monDropdown");
 // The dropdown
@@ -19,22 +19,249 @@ let baseStatsWindow = document.getElementById('baseStats');
 // Chart container
 let evChart = document.getElementById('evChart');
 
+// <p> that asks what you will train
+let whatTrain = document.getElementById('whatTrain');
+
+// Button for user to confirm this pokemon is the one they want to build with
+// When selected, get rid of dropdown and display the pokemon
+let confirmButton = document.getElementById('letsBuild');
+confirmButton.addEventListener('click',dropdownOptionSelected);
+
+// Training buttons for giving them event listeners
+let chooseHealth = document.getElementById('chooseHealth');
+let chooseAtk = document.getElementById('chooseAtk');
+let chooseDef = document.getElementById('chooseDef');
+let chooseSpa = document.getElementById('chooseSpa');
+let chooseSpDef = document.getElementById('chooseSpDef');
+let chooseSpe = document.getElementById('chooseSpe');
+
+let backButton = document.getElementById('goBack');
+
+let evContainer = document.getElementById('evContainer');
+let battleContainer = document.getElementById('battleContainer');
+
+// Battle table options
+let yield3 = document.getElementById('yield3');
+let yield2 = document.getElementById('yield2');
+let yield1 = document.getElementById('yield1');
+
+// Table columns for respective items
+let berryCol = document.getElementById('berryCol');
+let featherCol = document.getElementById('featherCol');
+let vitaminCol = document.getElementById('vitaminCol');
+let powerItemCol = document.getElementById('powerItemCol');
+
+let feedBerryButton = document.getElementById('feedBerryButton');
+let useFeatherButton = document.getElementById('useFeatherButton');
+let useVitaminButton = document.getElementById('useVitaminButton');
+
+// Table for EV battling dropdown
+let battleTable = document.getElementById('battleTable');
+
 // Maximum possible EVs you can invest across the board
 let evMax = 508;
-// Count of EVs at the moment
-let evsCount = 0;
+
+// EV investments
+let hpEvsCt = 0;
+let atkEvsCt = 0;
+let defEvsCt = 0;
+let spaEvsCt = 0;
+let spdEvsCt = 0;
+let speEvsCt = 0;
+
+let totalEvs = 0;
+
+let remaining = 508 - totalEvs;
+
+console.log("total evs at start: " + totalEvs);
+
 // Flag to stop adding
 let evsMaxed = false;
 
-// Map for EVs
-let EVsMap = {
-  'hp': 0,
-  'atk': 0,
-  'def': 0,
-  'spa': 0,
-  'spd': 0,
-  'spe': 0
+// For use with equipment button
+let equipped = false;
+let equipToggle = document.getElementById('equipToggle');
+let equipmentBonus = 8;
+
+equipToggle.addEventListener('click', function(){
+  equipped = !equipped;
+  if(equipped){
+    equipToggle.classList.remove("btn-primary");
+    equipToggle.classList.add("btn-secondary");
+    console.log("power item bonus active!")
+    equipToggle.value = "Unequip Power Item";
+  } else {
+    equipToggle.classList.remove("btn-secondary");
+    equipToggle.classList.add("btn-primary");
+    console.log("power item bonus off");
+    equipToggle.value = "Equip Power Item";
   }
+});
+
+// Remove EV Functions
+feedBerryButton.addEventListener('click', function(){
+  const berryText = berryCol.textContent;
+
+  if(berryText.includes("Pomeg")){
+    berryFed("hp");
+  } else if(berryText.includes("Kelpsy")){
+    berryFed("atk");
+  } else if(berryText.includes("Qualot")){
+    berryFed("def");
+  } else if(berryText.includes("Hondew")){
+    berryFed("spa");
+  } else if(berryText.includes("Grepa")){
+    berryFed("spd");
+  } else if(berryText.includes("Tamato")){
+    berryFed("spe");
+  }
+
+});
+function berryFed(stat){
+  //...
+  switch(stat) {
+    case "hp":
+      hpEvsCt = Math.max(0, hpEvsCt - 10);
+      break;
+    case "atk":
+      atkEvsCt = Math.max(0, atkEvsCt - 10);
+      break;
+    case "def":
+      defEvsCt = Math.max(0, defEvsCt - 10);
+      break;
+    case "spa":
+      spaEvsCt = Math.max(0, spaEvsCt - 10);
+      break;
+    case "spd":
+      spdEvsCt = Math.max(0, spdEvsCt - 10);
+      break;
+    case "spe":
+      speEvsCt = Math.max(0, speEvsCt - 10);
+      break;
+  }
+  console.log("Berries fed");
+  verifyTotal();
+  updateChart();
+}
+
+// Add Ev Functions
+
+useFeatherButton.addEventListener('click', function(){
+  const featherText = featherCol.textContent;
+
+  if(featherText === ("Use Health Feather (+1 EVs)")){
+    featherUsed("hp");
+  } else if(featherText === ("Use Attack Feather (+1 EVs)")){
+    featherUsed("atk");
+  } else if(featherText === ("Use Defense Feather (+1 EVs)")){
+    featherUsed("def");
+  } else if(featherText === ("Use Sp. Attack Feather (+1 EVs)")){
+    featherUsed("spa");
+  } else if(featherText === ("Use Sp. Defense Feather (+1 EVs)")){
+    featherUsed("spd");
+  } else if(featherText === ("Use Speed Feather (+1 EVs)")){
+    featherUsed("spe");
+  }
+});
+
+function featherUsed(stat) {
+  if (totalEvs == 508) {
+    console.log("EVs full");
+    return;
+  }
+
+  // Add 1 to the relevant stat, ensuring it does not exceed 252
+  // Don't add more than what's left
+  let addable = Math.min(1, remaining); 
+  switch (stat) {
+    case "hp":
+      hpEvsCt = Math.min(252, hpEvsCt + addable);
+      break;
+    case "atk":
+      atkEvsCt = Math.min(252, atkEvsCt + addable);
+      break;
+    case "def":
+      defEvsCt = Math.min(252, defEvsCt + addable);
+      break;
+    case "spa":
+      spaEvsCt = Math.min(252, spaEvsCt + addable);
+      break;
+    case "spd":
+      spdEvsCt = Math.min(252, spdEvsCt + addable);
+      break;
+    case "spe":
+      speEvsCt = Math.min(252, speEvsCt + addable);
+      break;
+  }
+
+  console.log("Feathers used");
+  verifyTotal();
+  updateChart();
+}
+
+useVitaminButton.addEventListener('click', function(){
+  const vitaminText = vitaminCol.textContent;
+
+  if(vitaminText.includes("HP Up")){
+    vitaminUsed("hp");
+  } else if(vitaminText.includes("Protein")){
+    vitaminUsed("atk");
+  } else if(vitaminText.includes("Iron")){
+    vitaminUsed("def");
+  } else if(vitaminText.includes("Calcium")){
+    vitaminUsed("spa");
+  } else if(vitaminText.includes("Zinc")){
+    vitaminUsed("spd");
+  } else if(vitaminText.includes("Carbos")){
+    vitaminUsed("spe");
+  }
+});
+function vitaminUsed(stat){
+  if(totalEvs == 508){
+    console.log("EVs full");
+    return;
+  }
+  // Add 10 to the relevant stat, ensuring it does not exceed 252
+  // Don't add more than what's left
+  let addable = Math.min(10, remaining); 
+  switch (stat) {
+    case "hp":
+      hpEvsCt = Math.min(252, hpEvsCt + addable);
+      break;
+    case "atk":
+      atkEvsCt = Math.min(252, atkEvsCt + addable);
+      break;
+    case "def":
+      defEvsCt = Math.min(252, defEvsCt + addable);
+      break;
+    case "spa":
+      spaEvsCt = Math.min(252, spaEvsCt + addable);
+      break;
+    case "spd":
+      spdEvsCt = Math.min(252, spdEvsCt + addable);
+      break;
+    case "spe":
+      speEvsCt = Math.min(252, speEvsCt + addable);
+      break;
+  }
+  console.log("Vitamins used");
+  verifyTotal();
+  updateChart();
+}
+
+
+function verifyTotal(){
+  totalEvs = hpEvsCt + atkEvsCt + defEvsCt + spaEvsCt + spdEvsCt + speEvsCt;
+  remaining = 508 - totalEvs;
+  if (totalEvs > 508){
+    totalEvs = 508;
+  }
+  console.log("total evs: " + totalEvs);
+}
+
+
+// Map for EVs
+let EVsMap = {'hp': 0,'atk': 0,'def': 0,'spa': 0,'spd': 0,'spe': 0}
 // Array for base stats
 let statsArr = [0,0,0,0,0,0]
 // Chart.js EV and Stats chart
@@ -71,200 +298,133 @@ let statsArr = [0,0,0,0,0,0]
         }
       });
 
-// Button for user to confirm this pokemon
-// When selected, get rid of dropdown and display the pokemon
-let confirmButton = document.getElementById('letsBuild');
-confirmButton.addEventListener('click',dropdownOptionSelected);
-
-// Training button event listeners
-let chooseHealth = document.getElementById('chooseHealth');
-let chooseAtk = document.getElementById('chooseAtk');
-let chooseDef = document.getElementById('chooseDef');
-let chooseSpa = document.getElementById('chooseSpa');
-let chooseSpDef = document.getElementById('chooseSpDef');
-let chooseSpe = document.getElementById('chooseSpe');
-//let start = document.getElementById('letsStart');
-
-// Add event listeners to each of the buttons such that
-// when they're clicked, create their respective tables
-// and hide the 'choose' buttons
-chooseHealth.addEventListener('click', function () {
-addTrainingTable('hp');
-chooseHealth.style.display = "none";
-});
-chooseAtk.addEventListener('click', function () {
-addTrainingTable('atk');
-chooseAtk.style.display = "none";
-});
-chooseDef.addEventListener('click', function () {
-addTrainingTable('def');
-chooseDef.style.display = "none";
-});
-chooseSpa.addEventListener('click', function () {
-addTrainingTable('spa');
-chooseSpa.style.display = "none";
-});
-chooseSpDef.addEventListener('click', function () {
-addTrainingTable('spd');
-chooseSpDef.style.display = "none";
-});
-chooseSpe.addEventListener('click', function () {
-addTrainingTable('spe');
-chooseSpe.style.display = "none";
-});
-  
-  
-  
-  
-
-
-// Create a table for this Effort Value.
-function addTrainingTable(effortValue){
-
+    // A map for the stat and its items
   const effortMappings = {
-    'hp': {powerItem: "Power Band", vitamin: "HP Up", feather: "Health Feather", berry: "Pomeg Berry"},
-    'atk': {powerItem: "Power Bracer", vitamin: "Protein", feather: "Attack Feather", berry: "Kelpsy Berry"},
-    'def': {powerItem: "Power Belt", vitamin: "Iron", feather: "Defense Feather", berry: "Qualot Berry"},
-    'spa': {powerItem: "Power Lens", vitamin: "Calcium", feather: "Sp. Attack Feather", berry: "Hondew Berry"},
-    'spd': {powerItem: "Power Band", vitamin: "Zinc", feather: "Sp. Defense Feather", berry: "Grepa Berry"},
-    'spe': {powerItem: "Power Anklet", vitamin: "Carbos", feather: "Speed Feather", berry: "Tamato Berry"}
-    }
-
-  // Create new table to add stuff
-  const newTable = document.createElement("table");
-  // Create the head of the table
-  const newHead = document.createElement("thead");
-  // Create the tr of the head of the table
-  const newTr = document.createElement("tr");
-  // Create body
-  const newBod = document.createElement("tbody");
-
-  // We need a th for each training option
-    const berryTh = document.createElement("th");
-    berryTh.setAttribute("scope", "col");
-    berryTh.innerText = "Use " + effortMappings[effortValue].berry + " (-10 EVs)";
-    berryTh.classList.add("p-3");
-
-    const vitaminTh = document.createElement("th");
-    vitaminTh.setAttribute("scope", "col");
-    vitaminTh.innerText = "Use " + effortMappings[effortValue].vitamin + " (+10 EVs)";
-    vitaminTh.classList.add("p-3");
-
-    const featherTh = document.createElement("th");
-    featherTh.setAttribute("scope", "col");
-    featherTh.innerText = "Use " + effortMappings[effortValue].feather + " (+1 EVs)";
-    featherTh.classList.add("p-3");
-
-    const equipmentTh = document.createElement("th");
-    equipmentTh.setAttribute("scope", "col");
-    equipmentTh.innerText = "Equip " + effortMappings[effortValue].powerItem + " (+8 EVs)";
-    equipmentTh.classList.add("p-3");
-
-  // That is the head and tr done, add everything
-  newTr.appendChild(berryTh);
-  newTr.appendChild(vitaminTh);
-  newTr.appendChild(featherTh);
-  newTr.appendChild(equipmentTh);
-  newHead.appendChild(newTr);
-  
-  // Now the body must be populated with the buttons
-  const berryButton = document.createElement("button");
-  berryButton.innerText = "Feed " + effortMappings[effortValue].berry;
-
-  const vitaminButton = document.createElement("button");
-  vitaminButton.innerText = "Use " + effortMappings[effortValue].vitamin;
-
-  const featherButton = document.createElement("button");
-  featherButton.innerText = "Use " + effortMappings[effortValue].feather;
-
-  const equipmentButton = document.createElement("button");
-  equipmentButton.innerText = "Equip " + effortMappings[effortValue].powerItem;
-  
-  // Add event listeners to each of the buttons
-  // Berries remove 10 of an EV
-  berryButton.addEventListener('click', function(){
-
-    EVsMap[effortValue] = EVsMap[effortValue] - 10;
-    if(EVsMap[effortValue] <= 0){
-      EVsMap[effortValue] = 0;
-    }
-    console.log("berry pressed");
-    updateChart();
-  });
-  
-  // Vitamins add 10 of an EV
-  vitaminButton.addEventListener('click', function(){
-    // Increase this EV
-    EVsMap[effortValue] = EVsMap[effortValue] + 10;
-    // Cap it at 252
-    if(EVsMap[effortValue] >= 252){
-      EVsMap[effortValue] = 252;
-    }
-    console.log("vitamin pressed");
-    updateChart();
-  });
-  // Feathers add 1 of an EV
-  featherButton.addEventListener('click', function(){
-
-    EVsMap[effortValue] = EVsMap[effortValue] + 1;
-    if(EVsMap[effortValue] >= 252){
-      EVsMap[effortValue] = 252;
-    }
-    console.log("feather pressed");
-    updateChart();
-  });
-
-  const newRow = document.createElement("tr");
-
-  const berryTd = document.createElement("td");
-  berryTd.classList.add("p-3");
-  berryTd.appendChild(berryButton);
-  
-  const vitaminTd = document.createElement("td");
-  vitaminTd.classList.add("p-3");
-  vitaminTd.appendChild(vitaminButton);
-  
-  const featherTd = document.createElement("td");
-  featherTd.classList.add("p-3");
-  featherTd.appendChild(featherButton);
-  
-  const equipmentTd = document.createElement("td");
-  equipmentTd.classList.add("p-3");
-  equipmentTd.appendChild(equipmentButton);
-  
-  newRow.appendChild(berryTd);
-  newRow.appendChild(vitaminTd);
-  newRow.appendChild(featherTd);
-  newRow.appendChild(equipmentTd);
-  newBod.appendChild(newRow);
-
-  // Add the body to the table and the span
-  newTable.appendChild(newHead);
-  newTable.appendChild(newBod);
-  document.getElementById("addTables").appendChild(newTable);
-
-  
-
-
-
-
+  'Health': {powerItem: "Power Weight", vitamin: "HP Up", feather: "Health Feather", berry: "Pomeg Berry"},
+  'Attack': {powerItem: "Power Bracer", vitamin: "Protein", feather: "Attack Feather", berry: "Kelpsy Berry"},
+  'Defense': {powerItem: "Power Belt", vitamin: "Iron", feather: "Defense Feather", berry: "Qualot Berry"},
+  'Sp. Attack': {powerItem: "Power Lens", vitamin: "Calcium", feather: "Sp. Attack Feather", berry: "Hondew Berry"},
+  'Sp. Defense': {powerItem: "Power Band", vitamin: "Zinc", feather: "Sp. Defense Feather", berry: "Grepa Berry"},
+  'Speed': {powerItem: "Power Anklet", vitamin: "Carbos", feather: "Speed Feather", berry: "Tamato Berry"}
   }
+
+  let buttons = [chooseHealth, chooseAtk, chooseDef, chooseSpa, chooseSpDef, chooseSpe];
+  let options = ['Health', 'Attack', 'Defense', 'Sp. Attack', 'Sp. Defense', 'Speed'];
+  
+  // Adding event listeners for the investment buttons
+  buttons.forEach((button, index) => {
+    button.addEventListener('click', function() {
+      editTable(options[index]);
+      hideButtons();
+    });
+  });
+
+  // Hide the investment and battle tables, and unhide
+  // choose buttons.
+  backButton.addEventListener('click', function(){
+    
+    // Unhide
+    unhideButtons();
+
+    // Hide
+    evContainer.style.display = "none";
+    battleContainer.style.display = "none";
+    backButton.style.display = "none";
+    // Reset tables, too
+    console.log("resetting cols");
+    powerItemCol.innerText = "Equip RESPECTIVE_POWER_ITEM (+8 EVs in Battle)";
+    vitaminCol.innerText = "Use RESPECTIVE_VITAMIN (+10 EVs)";
+    featherCol.innerText = "Use RESPECTIVE_FEATHER (+1 EVs)";
+    berryCol.innerText = "Feed RESPECTIVE_BERRY (-10 EVs)";
+    console.log("resetting battle tables");
+
+  });
+
+/**
+ * Function to hide buttons.
+ */
+  function hideButtons(){
+    chooseAtk.style.display = "none";
+    chooseDef.style.display = "none";
+    chooseHealth.style.display = "none";
+    chooseSpDef.style.display = "none";
+    chooseSpa.style.display = "none";
+    chooseSpe.style.display = "none";
+  }
+
+  function unhideButtons(){
+    chooseAtk.style.display = "inline-block";
+    chooseDef.style.display = "inline-block";
+    chooseHealth.style.display = "inline-block";
+    chooseSpDef.style.display = "inline-block";
+    chooseSpa.style.display = "inline-block";
+    chooseSpe.style.display = "inline-block";
+  }
+
+/**
+ * A function to populate the monDropdown element with Pokemon.
+ */
+function populateDropdown(){
+  // read in file
+  fetch("parsedDex.txt")
+      .then(r=>r.text())
+      .then(text => {
+      // convert to array
+      let lines;
+      lines = text.split("\n")
+      console.log(lines);
+
+      let dropdown = document.getElementById('monDropdown');
+      for(const element of lines){
+      // create dropdown option with this line
+      let newOption = document.createElement('option');
+      newOption.value = element;
+      newOption.text = element;
+      dropdown.add(newOption);
+      }
+  });
+}
+
+// PLAN
+// One stat at a time for now. update table depending on stat selected. then, prompt with dropdown of
+// mons that give that EV yield and only that EV yield maybe
+function editTable(effortValue){
+
+  console.log("editTable called with effortValue:", effortValue);
+
+
+  // Get header of the EV table
+  let header = document.getElementById('evTableHeader');
+
+  // Update table information accordingly depending on the stat button pressed
+  powerItemCol.innerText = powerItemCol.innerText.replace("RESPECTIVE_POWER_ITEM", effortMappings[effortValue].powerItem);
+  vitaminCol.innerText = vitaminCol.innerText.replace("RESPECTIVE_VITAMIN", effortMappings[effortValue].vitamin);
+  featherCol.innerText = featherCol.innerText.replace("RESPECTIVE_FEATHER", effortMappings[effortValue].feather);
+  berryCol.innerText = berryCol.innerText.replace("RESPECTIVE_BERRY", effortMappings[effortValue].berry);
+
+  // Hide the buttons now that a button has been pressed
+
+  whatTrain.style.display = "none";
+  chooseHealth.style.display = "none";
+  chooseAtk.style.display = "none";
+  chooseDef.style.display = "none";
+  chooseSpa.style.display = "none";
+  chooseSpDef.style.display = "none";
+  chooseSpe.style.display = "none";
+
+  // Unhide relevant tables
+  evContainer.style.display = "table";
+  battleContainer.style.display = "table";
+  // And back button
+  backButton.style.display = "inline-block";
+}
 
 // Function to update the chart with the current EV values
 function updateChart() {
-  statChart.data.datasets[0].data = [
-    EVsMap['hp'],
-    EVsMap['atk'],
-    EVsMap['def'],
-    EVsMap['spe'],
-    EVsMap['spd'],
-    EVsMap['spa']
-  ];
+  statChart.data.datasets[0].data = [hpEvsCt, atkEvsCt, defEvsCt, speEvsCt, spdEvsCt, spaEvsCt];
+  statChart.update();
   statChart.update();
 }
-
-
-  
 
 // Event listener that listens for any change in the dropdown
 //monDropdown.addEventListener('change',dropdownOptionSelected);
@@ -303,7 +463,6 @@ function dropdownOptionSelected(){
         replaceWithMon.style.display = "block";
         evChart.style.display = "flex";
         evChart.style.justifyContent = "center";
-        
 
         // Get the text element that shows this Pokemon's name and
         // replace it with the name of the chosen Pokemon
@@ -378,67 +537,8 @@ function dropdownOptionSelected(){
                 borderWidth: 1,
                 backgroundColor: 'rgba(255, 251, 16, 0.49)'
             });
-
     })
     .catch(error => {
         console.error(error);
     });
 }
-
-/**
- * A function to populate the monDropdown element with Pokemon.
- */
-function populateDropdown(){
-    // read in file
-    fetch("parsedDex.txt")
-        .then(r=>r.text())
-        .then(text => {
-        // convert to array
-        let lines;
-        lines = text.split("\n")
-        console.log(lines);
-
-        let dropdown = document.getElementById('monDropdown');
-        for(const element of lines){
-        // create dropdown option with this line
-        let newOption = document.createElement('option');
-        newOption.value = element;
-        newOption.text = element;
-        dropdown.add(newOption);
-        }
-    });
-}
-
-/**
- * A function to get all the dex entries to date.
- * Kinda don't need this right now... keeping it for now
- */
-function fetchDexEntries(){
-    // fetch pokedex JSON, contains dex entry number
-    fetch(`https://pokeapi.co/api/v2/pokemon-species/?limit=0`)
-    // check response status
-    .then(res => {
-        if (!res.ok){
-            // if not, throw an error
-            throw new Error("Dex entry fetch failed.");
-        }
-            //return the response as json
-        return res.json();
-    })
-    // response is ok, handle data
-    .then(data => {
-        // get number of dex entries
-        dexEntries = data.count;
-        console.log("PokeAPI Dex entry count: " + dexEntries);
-        return dexEntries;
-        
-
-    })
-    // catch any errors
-    .catch(error => {
-        console.error(error);
-    })
-}
-
-
-
