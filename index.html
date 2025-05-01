@@ -32,7 +32,9 @@
     <!-- RENAME ME TO BUILDER -->
 
 <!-- Header -->
- <section id = "titleEV">
+
+<div class="d-flex flex-column justify-content-center align-items-center text-center">
+ <section id = "titleEV" class="mb-4">
     <p> EV Trainer </p>
     <p id = "tut"> For a brief tutorial on the tool and/or an explanation of EVs, 
         click <a href = "/tutorial">here</a>.</p>
@@ -41,26 +43,26 @@
     <!-- This section will be in the center. This section will be 
      replaced once the dropdown or save button is fulfilled by another 
      section containing the pokemon and its stats and stuff -->
-    <section id = "loadupWindow" style = "display:block">
+    <section id = "loadupWindow">
         <p> Choose a Pokemon from the dropdown to start from scratch, or load a saved Pokemon.</p>
     
         <!-- Dropdown for selecting pokemon -->
-        <select name= "monDropdown" id = "monDropdown" style = "width: 50vw">
+        <select name= "monDropdown" id = "monDropdown" class="form-select mb-3" style = "width: 50vw">
             <option id = "placeholder" value = "default">--Please choose a Pokemon--</option>
         </select>
 
         <div>
-        <input type = "button" value = "Lets Build" id = "letsBuild" name = "letsBuild" class = "btn btn-primary">
-        <input type = "button" value = "Load Saved Pokemon" id = "loadSaved" name = "loadSavedButton" class="btn btn-secondary">
+        <input type = "button" value = "Let's Build" id = "letsBuild" name = "letsBuild" class = "btn btn-primary rounded">
+        <input type = "button" value = "Load Saved Pokemon" id = "loadSaved" name = "loadSavedButton" class="btn btn-secondary rounded">
         </div>
     
+   
     </section>
-    <section id = "evChart" style = "display: none;">
-        <canvas id="evs" style="max-height: 65vh"></canvas>
-    </section>
+</div>
 
-    <!-- sprite -->
-    <img id = "replaceWithSprite" style = "display: flex; justify-content: center;">
+    <section id = "evChart" style = "display: none;">
+        <canvas id="evs" ></canvas>
+    </section>
 
     <div></div>
     <!-- section displaying pokemon name and its stats-->
@@ -69,9 +71,12 @@
         <!-- name -->
         <p id = "replaceWithMon" class="p-2">PLACEHOLDER</p>
         <!-- stats to display -->
-         <span id = "baseStats" class="p-2"></span>
+         <!-- sprite -->
+        <img id = "replaceWithSprite">
         </div>
     </section>
+
+
  
     <!-- This section will always be right under the loadup window and 
      the pokemon window-->
@@ -84,72 +89,71 @@
                                     <!-- display none hides this entire section
                                     will be updated with js when a mon is chosen-->
     <section id = "trainOptionButtons" style = "display: none">
-    <p id = "whatTrain"> What will you train? </p>
+        <p id = "whatTrain" class = "text-center"> What will you train? </p>
+        <div class="d-flex justify-content-center">
     
-    <input type = "button" value = "Health EVs" id = "chooseHealth" name = "chooseHealthButton">
-    <input type = "button" value = "Attack EVs" id = "chooseAtk" name = "chooseAtkButton">
-    <input type = "button" value = "Defense EVs" id = "chooseDef" name = "chooseDefButton">
-    <input type = "button" value = "Special Attack EVs" id = "chooseSpa" name = "chooseSpaButton">
-    <input type = "button" value = "Special Defense EVs" id = "chooseSpDef" name = "chooseSpDefButton">
-    <input type = "button" value = "Speed EVs" id = "chooseSpe" name = "chooseSpeButton">
+    <input type = "button" value = "Health EVs" id = "chooseHealth" class = "btn-secondary rounded" name = "chooseHealthButton">
+    <input type = "button" value = "Attack EVs" id = "chooseAtk" class = "btn-secondary rounded" name = "chooseAtkButton">
+    <input type = "button" value = "Defense EVs" id = "chooseDef" class = "btn-secondary rounded" name = "chooseDefButton">
+    <input type = "button" value = "Special Attack EVs" id = "chooseSpa" class = "btn-secondary rounded" name = "chooseSpaButton">
+    <input type = "button" value = "Special Defense EVs" id = "chooseSpDef" class = "btn-secondary rounded" name = "chooseSpDefButton">
+    <input type = "button" value = "Speed EVs" id = "chooseSpe" class = "btn-secondary rounded" name = "chooseSpeButton">
+        </div>
     </section>
 
     <!-- Effort tables-->
-     <div id = "evContainer" style = "display: none;">
+     <div id = "evContainer" style = "display: none;" class="container mt-5">
     <p id = "evTableHeader"><strong>Item Training</strong></p>
     <table id = "evTable">
       <thead>
         <tr>
-          <th scope="col" id = "berryCol">Feed RESPECTIVE_BERRY (-10 EVs)</th>
-          <th scope="col" id = "featherCol">Use RESPECTIVE_FEATHER (+1 EVs)</th>
-          <th scope="col" id = "vitaminCol">Use RESPECTIVE_VITAMIN (+10 EVs)</th>
-          <th scope="col" id = "powerItemCol">Equip RESPECTIVE_POWER_ITEM (+8 EVs in Battle)</th>
+          <th scope="col" class="col-md-3 text-center" id = "berryCol">Feed RESPECTIVE_BERRY (-10 EVs)</th>
+          <th scope="col" class="col-md-3 text-center" id = "featherCol">Use RESPECTIVE_FEATHER (+1 EVs)</th>
+          <th scope="col" class="col-md-3 text-center" id = "vitaminCol">Use RESPECTIVE_VITAMIN (+10 EVs)</th>
+          <th scope="col" class="col-md-3 text-center" id = "powerItemCol">Equip RESPECTIVE_POWER_ITEM (+8 EVs in Battle)</th>
         </tr>
       </thead>
       <tbody>
         <tr>
             <td>
-              <input type = "button" id = "feedBerryButton" value = "Feed Berry">
+              <input type = "button" id = "feedBerryButton" value = "Feed Berry" class = "btn-secondary rounded col text-center">
             </td>
             <td>
-                <input type = "button" id = "useFeatherButton" value = "Use Feather">
+                <input type = "button" id = "useFeatherButton" value = "Use Feather" class = "btn-secondary rounded col text-center">
             </td>
             <td>
-                <input type = "button" id = "useVitaminButton" value = "Use Vitamin">
+                <input type = "button" id = "useVitaminButton" value = "Use Vitamin" class = "btn-secondary rounded col text-center">
             </td>
             <td>
-                <input type = "button" id = "equipToggle" class = "btn-primary" value = "Equip Power Item">
+                <input type = "button" id = "equipToggle" class = "btn-primary rounded col text-center" value = "Equip Power Item">
             </td>
           </tr>
       </tbody>
     </table>
     </div>
     
-    <div id = "battleContainer" style = "display: none;">
+    <div id = "battleContainer" style = "display: none;" class="container mt-5">
     <!-- dropdown to select who to add to the battle table here-->
     <!-- Battle table-->
     <p><strong>Battle Training</strong></p>
-    <table id = "battleTable" style = "display: none">
+    <table id = "battleTable" style = "display: none; justify-content: center;">
       <tbody>
-        <select name= "battleDropdown" id = "battleDropdown" style = "width: 50vw">
+        <div class="d-flex justify-content-center">
+        <select name= "battleDropdown" id = "battleDropdown" style = "width: 50vw" class = >
             <option id = "placeholder2" value = "default">--Choose Opponent's EV Yield--</option>
             <option id = "yield3" value = "3">3 EVs</option>
             <option id = "yield2" value = "2">2 EVs</option>
             <option id = "yield1" value = "1">1 EVs</option>
         </select>
-        <input type = "button" id = "knockoutButton" value = "Defeat!">
+        <input type = "button" id = "knockoutButton" value = "Defeat!" class = "btn-primary rounded">
+    </div>
+        
       </tbody>
     </table>
     </div>
 
-    <input type = "button" value = "Go Back to EV Selection" style = "display:none" id = "goBack" name = "backButton">
+    <input type = "button" value = "Go Back to EV Selection" style = "display:none" id = "goBack" name = "backButton" class = "btn-secondary rounded">
 
-    
-
-
-
-  
-    
 
 </body>
 </html>
