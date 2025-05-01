@@ -2,6 +2,7 @@
 
 // Populate dropdown immediately upon site load
 populateDropdown();
+
 // Dropdown to select
 let dropdown = document.getElementById("monDropdown");
 // The dropdown
@@ -57,6 +58,9 @@ let useVitaminButton = document.getElementById('useVitaminButton');
 
 // Table for EV battling dropdown
 let battleTable = document.getElementById('battleTable');
+let battleDropdown = document.getElementById('battleDropdown');
+let knockoutButton = document.getElementById('knockoutButton');
+let yieldValue = 0;
 
 // Maximum possible EVs you can invest across the board
 let evMax = 508;
@@ -259,6 +263,84 @@ function verifyTotal(){
   console.log("total evs: " + totalEvs);
 }
 
+// Battle EV training
+let koValue = 0;
+
+battleDropdown.addEventListener('change', function(){
+  console.log("battleDropdown firing cuz of change");
+  // Get value of dropdown
+yieldValue = battleDropdown.value; 
+
+if(yieldValue === "3"){
+  koValue = 3;
+  console.log("koValue: " + koValue);
+} else if(yieldValue === "2"){
+  koValue = 2;
+  console.log("koValue: " + koValue);
+} else if(yieldValue === "1"){
+  koValue = 1;
+  console.log("koValue: " + koValue);
+} else {console.error("You can't fight for EVs unless you select a yield.")};
+
+});
+
+function knockout(koValToUse, stat){
+  if(equipped){
+    koValToUse = koValToUse + equipmentBonus // 3, 2, or 1, plus 8
+  }
+
+  let remainingEVs = 508 - totalEvs;
+  let addable = Math.min(koValToUse, remainingEVs);
+
+  switch(stat){
+    case "hp":
+      hpEvsCt = Math.min(252, hpEvsCt + addable);
+      break;
+    case "atk":
+      atkEvsCt = Math.min(252, atkEvsCt + addable);
+      break;
+    case "def":
+      defEvsCt = Math.min(252, defEvsCt + addable);
+      break;
+    case "spa":
+      spaEvsCt = Math.min(252, spaEvsCt + addable);
+      break;
+    case "spd":
+      spdEvsCt = Math.min(252, spdEvsCt + addable);
+      break;
+    case "spe":
+      speEvsCt = Math.min(252, speEvsCt + addable);
+      break;
+    case "default":
+      console.log("You didn't select anything from the dropdown probably");
+
+  }
+  verifyTotal();
+  updateChart();
+
+  console.log("EVs applied through battle");
+}
+
+knockoutButton.addEventListener('click', function(){
+  const itemText = powerItemCol.textContent;
+
+  if(itemText.includes("Weight")){
+    knockout(koValue, "hp");
+  } else if(itemText.includes("Bracer")){
+    knockout(koValue, "atk");
+  } else if(itemText.includes("Belt")){
+    knockout(koValue, "def");
+  } else if(itemText.includes("Lens")){
+    knockout(koValue, "spa");
+  } else if(itemText.includes("Band")){
+    knockout(koValue, "spd");
+  } else if(itemText.includes("Anklet")){
+    knockout(koValue, "spe");
+  }
+
+});
+
+
 
 // Map for EVs
 let EVsMap = {'hp': 0,'atk': 0,'def': 0,'spa': 0,'spd': 0,'spe': 0}
@@ -458,6 +540,8 @@ function dropdownOptionSelected(){
         console.log(data);
         // We got a 'mon, unhide EV page, training, and hide startup
         //evWindow.style.display = "block";     // dont display mon for now
+        let tut = document.getElementById('tut');
+        tut.style.display = "none";
         startup.style.display = "none";
         trainingOptions.style.display = "block";
         replaceWithMon.style.display = "block";
