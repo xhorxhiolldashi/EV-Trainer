@@ -545,6 +545,9 @@ function dropdownOptionSelected(){
     console.log(dropdownMon + " element value");
     let pokeName = dropdownMon.toString();
     console.log(pokeName + " string");
+    if(pokeName === "default"){
+      alert("Select a Pokemon.");
+    }
     // Call API to get this Pokemon name object
     fetch(`https://pokeapi.co/api/v2/pokemon/${pokeName}/`)
     // Check status
@@ -557,7 +560,12 @@ function dropdownOptionSelected(){
     .then(data => {
         console.log(data);
         // We got a 'mon, unhide EV page, training, and hide startup
-        //evWindow.style.display = "block";     // display mon for now
+        evWindow.style.display = "block";     // display mon for now
+        // Make it sticky to top-right
+        evWindow.style.position = "fixed";
+        evWindow.style.top = "0";
+        evWindow.style.right = "0";
+        evWindow.style.zIndex = "999";
         let tut = document.getElementById('tut');
         tut.style.display = "none";
         startup.style.display = "none";
