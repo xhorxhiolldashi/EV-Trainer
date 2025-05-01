@@ -59,8 +59,8 @@ let useVitaminButton = document.getElementById('useVitaminButton');
 // Table for EV battling dropdown
 let battleTable = document.getElementById('battleTable');
 let battleDropdown = document.getElementById('battleDropdown');
+console.log("Dropdown: " + battleDropdown);
 let knockoutButton = document.getElementById('knockoutButton');
-let yieldValue = 0;
 
 // Maximum possible EVs you can invest across the board
 let evMax = 508;
@@ -169,8 +169,9 @@ useFeatherButton.addEventListener('click', function(){
 });
 
 function featherUsed(stat) {
-  if (totalEvs == 508) {
+  if(totalEvs == 508){
     console.log("EVs full");
+    maxEVsAlert();
     return;
   }
 
@@ -222,6 +223,7 @@ useVitaminButton.addEventListener('click', function(){
 });
 function vitaminUsed(stat){
   if(totalEvs == 508){
+    maxEVsAlert();
     console.log("EVs full");
     return;
   }
@@ -257,34 +259,50 @@ function vitaminUsed(stat){
 function verifyTotal(){
   totalEvs = hpEvsCt + atkEvsCt + defEvsCt + spaEvsCt + spdEvsCt + speEvsCt;
   remaining = 508 - totalEvs;
-  if (totalEvs > 508){
+  if(totalEvs > 508){
     totalEvs = 508;
+    maxEVsAlert();
   }
   console.log("total evs: " + totalEvs);
 }
 
+function maxEVsAlert(){
+  alert("You have reached 508 EVs across the board (functional max). Berries can decrement your stats!");
+}
+
 // Battle EV training
 let koValue = 0;
+let yieldValue;
 
-battleDropdown.addEventListener('change', function(){
+// It is a jQuery/select2 dropdown
+// I must use their event listeners not native js
+
+$("#battleDropdown").on("change", function() {
+
   console.log("battleDropdown firing cuz of change");
-  // Get value of dropdown
-yieldValue = battleDropdown.value; 
+  yieldValue = $(this).val(); // jQuery to get value
 
-if(yieldValue === "3"){
-  koValue = 3;
-  console.log("koValue: " + koValue);
-} else if(yieldValue === "2"){
-  koValue = 2;
-  console.log("koValue: " + koValue);
-} else if(yieldValue === "1"){
-  koValue = 1;
-  console.log("koValue: " + koValue);
-} else {console.error("You can't fight for EVs unless you select a yield.")};
-
+  if(yieldValue === "3"){
+    koValue = 3;
+    console.log("koValue: " + koValue);
+  } else if(yieldValue === "2"){
+    koValue = 2;
+    console.log("koValue: " + koValue);
+  } else if(yieldValue === "1"){
+    koValue = 1;
+    console.log("koValue: " + koValue);
+  } else {console.log("You can't fight for EVs unless you select a yield.")
+          koValue = 0;
+  };
+  
 });
 
 function knockout(koValToUse, stat){
+
+  if(koValue == 0){
+    alert("Select an EV Yield from the dropdown. You can battle a Pokemon that yields 1, 2, or 3 of your chosen EV.");
+    throw new Error( Error("No koValue selected. Use dropdown"));
+  }
   if(equipped){
     koValToUse = koValToUse + equipmentBonus // 3, 2, or 1, plus 8
   }
@@ -318,7 +336,7 @@ function knockout(koValToUse, stat){
   verifyTotal();
   updateChart();
 
-  console.log("EVs applied through battle");
+  console.log("EVs applied through battle: " + koValToUse);
 }
 
 knockoutButton.addEventListener('click', function(){
@@ -539,7 +557,7 @@ function dropdownOptionSelected(){
     .then(data => {
         console.log(data);
         // We got a 'mon, unhide EV page, training, and hide startup
-        //evWindow.style.display = "block";     // dont display mon for now
+        //evWindow.style.display = "block";     // display mon for now
         let tut = document.getElementById('tut');
         tut.style.display = "none";
         startup.style.display = "none";
@@ -547,6 +565,8 @@ function dropdownOptionSelected(){
         replaceWithMon.style.display = "block";
         evChart.style.display = "flex";
         evChart.style.justifyContent = "center";
+        evChart.style.maxHeight = "50vh";
+
 
         // Get the text element that shows this Pokemon's name and
         // replace it with the name of the chosen Pokemon
@@ -610,9 +630,9 @@ function dropdownOptionSelected(){
                     statAbbreviation = "???";
               }
             console.log(stats);
-            let stat = document.createElement('p');
-            stat.textContent = stats + " " + statAbbreviation; 
-            baseStatsWindow.appendChild(stat);
+            //let stat = document.createElement('p');
+            //stat.textContent = stats + " " + statAbbreviation; 
+            //baseStatsWindow.appendChild(stat);
         }
             // push base stats
             statChart.data.datasets.push({
