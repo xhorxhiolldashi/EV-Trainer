@@ -479,6 +479,7 @@ let statsArr = [0,0,0,0,0,0]
    */
   function loadPokemon(){
     console.log("Load button pressed");
+    alert("Still a WIP... sorry");
   }
 
   /**
