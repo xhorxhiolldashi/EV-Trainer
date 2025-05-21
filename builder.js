@@ -19,9 +19,14 @@ let replaceWithMon = document.getElementById('replaceWithMon');
 let baseStatsWindow = document.getElementById('baseStats');
 // Chart container
 let evChart = document.getElementById('evChart');
-
+// Save to localStorage button (wip)
+let saveButton = document.getElementById('saveToStorage');
+// Load from localStorage button (wip)
+let loadButton = document.getElementById('loadSaved');
 // <p> that asks what you will train
 let whatTrain = document.getElementById('whatTrain');
+// to be populated by user's inputs
+let evWindowEVs = document.getElementById('evWindowEVs');
 
 // Button for user to confirm this pokemon is the one they want to build with
 // When selected, get rid of dropdown and display the pokemon
@@ -65,6 +70,9 @@ let knockoutButton = document.getElementById('knockoutButton');
 // Maximum possible EVs you can invest across the board
 let evMax = 508;
 
+// Pokemon name
+let pokemonName = "";
+
 // EV investments
 let hpEvsCt = 0;
 let atkEvsCt = 0;
@@ -81,6 +89,21 @@ console.log("total evs at start: " + totalEvs);
 
 // Flag to stop adding
 let evsMaxed = false;
+
+// Save a Pokemon and its effort values to localStorage for future training. WIP
+saveButton.addEventListener('click', function(){
+  console.log(pokemonName);
+  // wip vvv ...
+  savePokemon();
+});
+
+// Load a Pokemon and its effort values from localStorage to train with. WIP
+loadButton.addEventListener('click', function(){
+  console.log(pokemonName);
+  // wip vvv ...
+  loadPokemon();
+});
+
 
 // For use with equipment button
 let equipped = false;
@@ -149,10 +172,8 @@ function berryFed(stat){
 }
 
 // Add Ev Functions
-
 useFeatherButton.addEventListener('click', function(){
   const featherText = featherCol.textContent;
-
   if(featherText === ("Use Health Feather (+1 EVs)")){
     featherUsed("hp");
   } else if(featherText === ("Use Attack Feather (+1 EVs)")){
@@ -167,7 +188,6 @@ useFeatherButton.addEventListener('click', function(){
     featherUsed("spe");
   }
 });
-
 function featherUsed(stat) {
   if(totalEvs == 508){
     console.log("EVs full");
@@ -255,7 +275,6 @@ function vitaminUsed(stat){
   updateChart();
 }
 
-
 function verifyTotal(){
   totalEvs = hpEvsCt + atkEvsCt + defEvsCt + spaEvsCt + spdEvsCt + speEvsCt;
   remaining = 508 - totalEvs;
@@ -275,8 +294,6 @@ let koValue = 0;
 let yieldValue;
 
 // It is a jQuery/select2 dropdown
-// I must use their event listeners not native js
-
 $("#battleDropdown").on("change", function() {
 
   console.log("battleDropdown firing cuz of change");
@@ -298,7 +315,6 @@ $("#battleDropdown").on("change", function() {
 });
 
 function knockout(koValToUse, stat){
-
   if(koValue == 0){
     alert("Select an EV Yield from the dropdown. You can battle a Pokemon that yields 1, 2, or 3 of your chosen EV.");
     throw new Error( Error("No koValue selected. Use dropdown"));
@@ -331,7 +347,6 @@ function knockout(koValToUse, stat){
       break;
     case "default":
       console.log("You didn't select anything from the dropdown probably");
-
   }
   verifyTotal();
   updateChart();
@@ -355,10 +370,7 @@ knockoutButton.addEventListener('click', function(){
   } else if(itemText.includes("Anklet")){
     knockout(koValue, "spe");
   }
-
 });
-
-
 
 // Map for EVs
 let EVsMap = {'hp': 0,'atk': 0,'def': 0,'spa': 0,'spd': 0,'spe': 0}
@@ -419,6 +431,13 @@ let statsArr = [0,0,0,0,0,0]
     });
   });
 
+  function hideButtonsAndContainers(){
+    evContainer.style.display = "none";
+    battleContainer.style.display = "none";
+    backButton.style.display = "none";
+    saveButton.style.display = "none";
+  }
+
   // Hide the investment and battle tables, and unhide
   // choose buttons.
   backButton.addEventListener('click', function(){
@@ -427,9 +446,8 @@ let statsArr = [0,0,0,0,0,0]
     unhideButtons();
 
     // Hide
-    evContainer.style.display = "none";
-    battleContainer.style.display = "none";
-    backButton.style.display = "none";
+    hideButtonsAndContainers();
+    
     // Reset tables, too
     console.log("resetting cols");
     powerItemCol.innerText = "Equip RESPECTIVE_POWER_ITEM (+8 EVs in Battle)";
@@ -441,9 +459,10 @@ let statsArr = [0,0,0,0,0,0]
   });
 
 /**
- * Function to hide buttons.
+ * Function to hide training buttons.
  */
   function hideButtons(){
+    whatTrain.style.display = "none";
     chooseAtk.style.display = "none";
     chooseDef.style.display = "none";
     chooseHealth.style.display = "none";
@@ -452,7 +471,89 @@ let statsArr = [0,0,0,0,0,0]
     chooseSpe.style.display = "none";
   }
 
+
+  /**
+   * Load a Pokemon from local storage.
+   * Approach: create a span, populated with everything in local storage, and give it a button
+   * to select it, once selected take its name and EVs and update the variables. 
+   */
+  function loadPokemon(){
+    console.log("Load button pressed");
+  }
+
+  /**
+   * Update save button with a floppy disk if changes are made. This is a function stub I might complete in the future.
+   */
+  function updateSaveButtonIcon(){
+  console.log("stub");
+  }
+
+  /**
+   * Saving the current state of the trained pokemon to local storage.
+   * We only need to save the EV counts for the purposes of this page.
+   * Get Pokemon's name, set the name as the key and the value will be a string of
+   * its EVs.
+   */
+  function savePokemon(){
+    // JSON object with EV values at this point in time
+      let evTotal = {
+    "HP":hpEvsCt,
+    "Atk":atkEvsCt,
+    "Def":defEvsCt,
+    "SpA":spaEvsCt,
+    "SpD":spdEvsCt,
+    "Spe":speEvsCt
+  }
+    // save to local storage
+    localStorage.setItem(pokemonName, JSON.stringify(evTotal));
+    console.log("Saved!");
+    alert(pokemonName + "'s current EVs saved.");
+  
+  }
+
+  /**
+   * Add EVs to span as they are incremented. Always check and update
+   * the elements depending on the EV global variables. Hide the elements
+   * when the EVs are 0.
+  */
+    let hpElement = document.createElement("p");
+    let atkElement = document.createElement("p");
+    let defElement = document.createElement("p");
+    let spaElement = document.createElement("p");
+    let spdElement = document.createElement("p");
+    let speElement = document.createElement("p");
+    
+    let elements = [hpElement, atkElement, defElement, spaElement, spdElement, speElement];
+
+    for(let i = 0; i < 6; i++){
+    evWindowEVs.appendChild(elements.at(i));
+    }
+
+  function populateEvWindowEvs(){
+    hpElement.innerText = "HP: " + hpEvsCt;
+    atkElement.innerText = "Atk: " + atkEvsCt;
+    defElement.innerText = "Def: " + defEvsCt;
+    spaElement.innerText = "SpA: " + spaEvsCt;
+    spdElement.innerText = "SpD: " + spdEvsCt;
+    speElement.innerText = "Spe: " + speEvsCt;
+
+    if(hpEvsCt === 0){hpElement.style.display = "none"} else {hpElement.style.display = "block"};
+    if(atkEvsCt === 0){atkElement.style.display = "none"} else {atkElement.style.display = "block"};
+    if(defEvsCt === 0){defElement.style.display = "none"} else {defElement.style.display = "block"};
+    if(spaEvsCt === 0){spaElement.style.display = "none"} else {spaElement.style.display = "block"};
+    if(spdEvsCt === 0){spdElement.style.display = "none"} else {spdElement.style.display = "block"};
+    if(speEvsCt === 0){speElement.style.display = "none"} else {speElement.style.display = "block"};
+    
+ 
+
+  }
+
+  /**
+   * Unhide training buttons
+   */
   function unhideButtons(){
+    whatTrain.style.display = "block";
+    whatTrain.classList.add("text-center");
     chooseAtk.style.display = "inline-block";
     chooseDef.style.display = "inline-block";
     chooseHealth.style.display = "inline-block";
@@ -485,7 +586,7 @@ function populateDropdown(){
   });
 }
 
-// PLAN
+// WIP
 // One stat at a time for now. update table depending on stat selected. then, prompt with dropdown of
 // mons that give that EV yield and only that EV yield maybe
 function editTable(effortValue){
@@ -515,12 +616,16 @@ function editTable(effortValue){
   // Unhide relevant tables
   evContainer.style.display = "table";
   battleContainer.style.display = "table";
-  // And back button
+  // And back button and save button
   backButton.style.display = "inline-block";
+  saveButton.style.display = "inline-block";
+
 }
 
 // Function to update the chart with the current EV values
+// We can also update the evWindow here
 function updateChart() {
+  populateEvWindowEvs();
   statChart.data.datasets[0].data = [hpEvsCt, atkEvsCt, defEvsCt, speEvsCt, spdEvsCt, spaEvsCt];
   statChart.update();
   statChart.update();
@@ -531,7 +636,8 @@ function updateChart() {
 
 /**
  * Function to get name of option selected in the dropdown and
- * search PokeAPI for it. 
+ * search PokeAPI for it, and update the webpage to be ready
+ * for building.
  * NOTE ------------------------------
  * This does NOT work with all Pokemon yet, because of Pokemon like
  * Necrozma, Mimikyu, etc. having forms (mimikyu-busted, 
@@ -584,6 +690,8 @@ function dropdownOptionSelected(){
         let uppercasingFirstLetter = buildMonsName.substring(0,1).toUpperCase();
         buildMonsName = uppercasingFirstLetter + buildMonsName.substring(1);
         buildMon.textContent = buildMonsName;
+        // update the local variable
+        pokemonName = buildMonsName;
         // get the animated version if it exists, if not then get the
         // regular front-facing sprite
         let pokeImage;
