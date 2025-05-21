@@ -44,7 +44,7 @@
      replaced once the dropdown or save button is fulfilled by another 
      section containing the pokemon and its stats and stuff -->
     <section id = "loadupWindow">
-        <p> Choose a Pokemon from the dropdown to start.</p>
+        <p> Choose a Pokemon from the dropdown to start or load a saved Pokemon (wip).</p>
     
         <!-- Dropdown for selecting pokemon -->
         <select name= "monDropdown" id = "monDropdown" class="form-select mb-3" style = "width: 50vw">
@@ -53,9 +53,8 @@
 
         <div>
         <input type = "button" value = "Let's Build" id = "letsBuild" name = "letsBuild" class = "btn btn-primary rounded">
-        <!--
-        <input type = "button" value = "Load Saved Pokemon" id = "loadSaved" name = "loadSavedButton" class="btn btn-secondary rounded">
-        -->
+        <input type = "button" value = "Load Saved Pokemon (wip)" id = "loadSaved" name = "loadSavedButton" class="btn btn-secondary rounded">
+        <span id = loadButtonPressed></span>
         </div>
     
    
@@ -68,14 +67,17 @@
 
     <div></div>
     <!-- section displaying pokemon name and its stats-->
-    <section id = "evWindow" style = "display:none">
+    <section id = "evWindow" style = "display:none; padding-right: 12px;">
         <div id = "evChartAndMons">
         <!-- name -->
         <p id = "replaceWithMon" class="p-2">PLACEHOLDER</p>
-        <!-- stats to display -->
-         <!-- no stats rn -->
-         <!-- sprite -->
+        <!-- sprite -->
         <img id = "replaceWithSprite">
+        <!-- stats to display -->
+        <p>EVs:</p>
+        <!-- dynamically insert elements here as the user adds evs -->
+        <span id = "evWindowEVs"></span>
+        
         </div>
     </section>
 
@@ -101,10 +103,11 @@
     <input type = "button" value = "Special Attack EVs" id = "chooseSpa" class = "btn-secondary rounded" name = "chooseSpaButton">
     <input type = "button" value = "Special Defense EVs" id = "chooseSpDef" class = "btn-secondary rounded" name = "chooseSpDefButton">
     <input type = "button" value = "Speed EVs" id = "chooseSpe" class = "btn-secondary rounded" name = "chooseSpeButton">
-        </div>
+    </div>
     </section>
 
     <!-- Effort tables-->
+     <div id = "tables">
      <div id = "evContainer" style = "display: none;" class="container mt-5">
     <p id = "evTableHeader"><strong>Item Training</strong></p>
     <table id = "evTable">
@@ -155,9 +158,13 @@
     </table>
     </div>
 
+    </div>
+
     <input type = "button" value = "Go Back to EV Selection" style = "display:none" id = "goBack" name = "backButton" class = "btn-secondary rounded">
-
-
+    <!-- save button -->
+    <div class = text-end>
+    <input type = "button" value = "Save Pokemon" style = "display:none" id = "saveToStorage" name = "saveButton" class = "btn-primary rounded text-end">
+    </div>
 </body>
 </html>
 
