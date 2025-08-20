@@ -499,9 +499,15 @@ let statsArr = [0,0,0,0,0,0]
 
     // Create a button to load from here
     let load = document.createElement('button');
+    load.innerText = "Load";
+    load.classList.add("btn", "btn-primary", "rounded");
+
     // load page normally with the pokemon button
     load.addEventListener('click', () => {
+      let hideMe = document.getElementById("loadButtonPressed");
+      hideMe.style.display = "none";
       loadButtonMethod(key);
+
 
       // update the EVs with the saved ones
   
