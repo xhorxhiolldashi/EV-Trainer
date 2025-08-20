@@ -107,12 +107,15 @@ loadButton.addEventListener('click', function(){
 
 // home page
 homeButton.addEventListener('click', () => {
-confirm("Go to home page? You will lose any unsaved progress.");
+let result = confirm("Go to home page? You will lose any unsaved progress.");
   if(result === true){
     // user clicked ok
   window.location.reload();
+  } else {
+    // do nothing if cancel
+    console.log("aborted")
   }
-  // do nothing if cancel
+  
 })
 
 
