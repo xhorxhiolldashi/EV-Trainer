@@ -44,7 +44,7 @@
      replaced once the dropdown or save button is fulfilled by another 
      section containing the pokemon and its stats and stuff -->
     <section id = "loadupWindow">
-        <p> Choose a Pokemon from the dropdown to start or load a saved Pokemon (wip).</p>
+        <p> Choose a Pokemon from the dropdown to start or <a href = "/saved">load</a> a saved Pokemon (wip).</p>
     
         <!-- Dropdown for selecting pokemon -->
         <select name= "monDropdown" id = "monDropdown" class="form-select mb-3" style = "width: 50vw">
@@ -53,7 +53,9 @@
 
         <div>
         <input type = "button" value = "Let's Build" id = "letsBuild" name = "letsBuild" class = "btn btn-primary rounded">
+        <a href = "/saved">
         <input type = "button" value = "Load Saved Pokemon (wip)" id = "loadSaved" name = "loadSavedButton" class="btn btn-secondary rounded">
+        </a>
         <span id = loadButtonPressed></span>
         </div>
     
@@ -164,6 +166,8 @@
     <!-- save button -->
     <div class = text-end>
     <input type = "button" value = "Save Pokemon" style = "display:none" id = "saveToStorage" name = "saveButton" class = "btn-primary rounded text-end">
+    <!-- home screen (reload)-->
+     <input type = "button" value = "reload" style = "display:none" id = "reload" name = "reloadButton" class = "btn-primary rounded text-end">
     </div>
 </body>
 </html>

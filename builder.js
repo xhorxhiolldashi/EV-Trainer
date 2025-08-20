@@ -3,6 +3,8 @@
 // Populate dropdown immediately upon site load
 populateDropdown();
 
+// Storage of edited Pokemon names
+let storage = [];
 // Dropdown to select
 let dropdown = document.getElementById("monDropdown");
 // The dropdown
@@ -479,8 +481,15 @@ let statsArr = [0,0,0,0,0,0]
    */
   function loadPokemon(){
     console.log("Load button pressed");
-    alert("Still a WIP... sorry");
-  }
+    
+    let monSpan = document.createElement("span");
+    storage.forEach(() => {
+      let p = document.createElement("p");
+      p.innerText = pokemonName;
+      monSpan.appendChild(p);
+    })
+}
+    
 
   /**
    * Update save button with a floppy disk if changes are made. This is a function stub I might complete in the future.
@@ -505,10 +514,13 @@ let statsArr = [0,0,0,0,0,0]
     "SpD":spdEvsCt,
     "Spe":speEvsCt
   }
-    // save to local storage
+    // save to local storage and name array
+    storage.push(pokemonName);
     localStorage.setItem(pokemonName, JSON.stringify(evTotal));
+
     console.log("Saved!");
     alert(pokemonName + "'s current EVs saved.");
+
   
   }
 
