@@ -42,6 +42,7 @@ let chooseSpDef = document.getElementById('chooseSpDef');
 let chooseSpe = document.getElementById('chooseSpe');
 
 let backButton = document.getElementById('goBack');
+let homeButton = document.getElementById('reload');
 
 let evContainer = document.getElementById('evContainer');
 let battleContainer = document.getElementById('battleContainer');
@@ -90,19 +91,24 @@ console.log("total evs at start: " + totalEvs);
 // Flag to stop adding
 let evsMaxed = false;
 
-// Save a Pokemon and its effort values to localStorage for future training. WIP
+// Save a Pokemon and its effort values to localStorage for future training.
 saveButton.addEventListener('click', function(){
   console.log(pokemonName);
   // wip vvv ...
   savePokemon();
 });
 
-// Load a Pokemon and its effort values from localStorage to train with. WIP
+// Load a Pokemon and its effort values from localStorage to train with.
 loadButton.addEventListener('click', function(){
   console.log(pokemonName);
   // wip vvv ...
   loadPokemon();
 });
+
+// home page
+homeButton.addEventListener('click', () => {
+window.location.reload();
+})
 
 
 // For use with equipment button
@@ -435,6 +441,7 @@ let statsArr = [0,0,0,0,0,0]
     evContainer.style.display = "none";
     battleContainer.style.display = "none";
     backButton.style.display = "none";
+    homeButton.style.display = "none";
     saveButton.style.display = "none";
   }
 
@@ -707,7 +714,9 @@ function editTable(effortValue){
   battleContainer.style.display = "table";
   // And back button and save button
   backButton.style.display = "inline-block";
+  homeButton.style.display = "inline-block";
   saveButton.style.display = "inline-block";
+  
 
 }
 
