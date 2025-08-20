@@ -3,8 +3,6 @@
 // Populate dropdown immediately upon site load
 populateDropdown();
 
-// Storage of edited Pokemon names
-let storage = [];
 // Dropdown to select
 let dropdown = document.getElementById("monDropdown");
 // The dropdown
@@ -479,15 +477,86 @@ let statsArr = [0,0,0,0,0,0]
    * Approach: create a span, populated with everything in local storage, and give it a button
    * to select it, once selected take its name and EVs and update the variables. 
    */
+
+  
+
   function loadPokemon(){
     console.log("Load button pressed");
     
-    let monSpan = document.createElement("span");
-    storage.forEach(() => {
-      let p = document.createElement("p");
-      p.innerText = pokemonName;
-      monSpan.appendChild(p);
+    let monSpan = document.getElementById("loadButtonPressed");
+
+    // displaying saved pokemon
+
+    // loop through storage
+    for(let i = 0; i < localStorage.length; i++){
+    // get key at index i
+    let key = localStorage.key(i); 
+    // get value by key
+    let value = localStorage.getItem(key);
+    // create an element with the pokemon
+    let elem = document.createElement('p');
+    elem.innerText = key + ": " + value;
+
+    // Create a button to load from here
+    let load = document.createElement('button');
+    // load page normally with the pokemon button
+    load.addEventListener('click', () => {
+      loadButtonMethod(key);
+
+      // update the EVs with the saved ones
+  
+    let newEvCt = JSON.parse(value);
+  
+    console.log("Json parse follows: ");
+    console.log(newEvCt);
+
+    // loop through and update
+
+    for(let key in newEvCt){
+      if(newEvCt.hasOwnProperty(key)){
+        console.log(key + " - " + newEvCt[key]);
+
+        if(key === "HP"){
+          hpEvsCt = newEvCt[key];
+        }
+        if(key === "Atk"){
+          atkEvsCt = newEvCt[key];
+        }
+        if(key === "Def"){
+          defEvsCt = newEvCt[key];
+        }
+        if(key === "SpA"){
+          spaEvsCt = newEvCt[key];
+        }
+        if(key === "SpD"){
+          spdEvsCt = newEvCt[key];
+        }
+        if(key === "Spe"){
+          speEvsCt = newEvCt[key];
+        }
+          
+      }
+  }
+
+    updateChart();
+
     })
+    elem.appendChild(load);
+    // log the pokemon
+    console.log(key, value);
+    // display the pokemon
+    monSpan.appendChild(elem);
+
+    
+
+    // hide buttons & dropdown since everything has been loaded
+    startup.style.display = "none";
+
+
+  
+    
+}   
+
 }
     
 
@@ -515,9 +584,10 @@ let statsArr = [0,0,0,0,0,0]
     "Spe":speEvsCt
   }
     // save to local storage and name array
-    storage.push(pokemonName);
+    
     localStorage.setItem(pokemonName, JSON.stringify(evTotal));
 
+    
     console.log("Saved!");
     alert(pokemonName + "'s current EVs saved.");
 
@@ -661,6 +731,129 @@ function updateChart() {
 function dropdownOptionSelected(){
     // Gets the selected dropdown element
     let dropdownMon = monDropdown.value;
+    console.log(dropdownMon + " element value");
+    let pokeName = dropdownMon.toString();
+    console.log(pokeName + " string");
+    if(pokeName === "default"){
+      alert("Select a Pokemon.");
+    }
+    // Call API to get this Pokemon name object
+    fetch(`https://pokeapi.co/api/v2/pokemon/${pokeName}/`)
+    // Check status
+    .then(res => {
+        if(!res.ok){
+            throw new Error("Unable to fetch " + pokeName + " from PokeAPI.")
+        } return res.json();
+    })
+    // Then handle data
+    .then(data => {
+        console.log(data);
+        // We got a 'mon, unhide EV page, training, and hide startup
+        evWindow.style.display = "block";     // display mon for now
+        // Make it sticky to top-right
+        evWindow.style.position = "fixed";
+        evWindow.style.top = "0";
+        evWindow.style.right = "0";
+        evWindow.style.zIndex = "999";
+        let tut = document.getElementById('tut');
+        tut.style.display = "none";
+        startup.style.display = "none";
+        trainingOptions.style.display = "block";
+        replaceWithMon.style.display = "block";
+        evChart.style.display = "flex";
+        evChart.style.justifyContent = "center";
+        evChart.style.maxHeight = "50vh";
+
+
+        // Get the text element that shows this Pokemon's name and
+        // replace it with the name of the chosen Pokemon
+        let buildMon = document.getElementById('replaceWithMon');
+        let buildMonsName = data.name;
+        // Uppercasing first letter here
+        let uppercasingFirstLetter = buildMonsName.substring(0,1).toUpperCase();
+        buildMonsName = uppercasingFirstLetter + buildMonsName.substring(1);
+        buildMon.textContent = buildMonsName;
+        // update the local variable
+        pokemonName = buildMonsName;
+        // get the animated version if it exists, if not then get the
+        // regular front-facing sprite
+        let pokeImage;
+        pokeImage = document.getElementById('replaceWithSprite');
+        if(data.sprites.other.showdown.front_default != null){
+            pokeImage.src = data.sprites.other.showdown.front_default;
+        } else {
+        // display the Pokemon's front-facing sprite
+        pokeImage.src = data.sprites.front_default;
+        }
+        // make it cry
+        let cry = new Audio(data.cries.latest);
+        cry.play();
+        // populate array with its stats
+        statsArr = [
+            data.stats[0].base_stat, // hp
+            data.stats[1].base_stat, // atk
+            data.stats[2].base_stat, // def
+            data.stats[3].base_stat, // spa
+            data.stats[4].base_stat, // spd
+            data.stats[5].base_stat // spe
+        ]
+        let index = 0; 
+        // print out base values
+        for(let stats of statsArr){    
+            let statAbbreviation = "";
+            switch(index){
+                case 0:
+                  statAbbreviation = "HP";
+                  index++;
+                  break;
+                case 1:
+                  statAbbreviation = "Atk";
+                  index++;
+                  break;
+                case 2:
+                   statAbbreviation = "Def";
+                   index++;
+                  break;
+                case 3:
+                  statAbbreviation = "Sp. Atk";
+                  index++;
+                  break;
+                case 4:
+                  statAbbreviation = "Sp. Def";
+                  index++;
+                  break;
+                case 5:
+                  statAbbreviation = "Speed";
+                  break;
+                default:
+                    statAbbreviation = "???";
+              }
+            console.log(stats);
+            //let stat = document.createElement('p');
+            //stat.textContent = stats + " " + statAbbreviation; 
+            //baseStatsWindow.appendChild(stat);
+        }
+            // push base stats
+            statChart.data.datasets.push({
+                label: 'Base Stat Values',
+                data: [statsArr[0], statsArr[1], statsArr[2], statsArr[5], statsArr[4], statsArr[3]],
+                borderWidth: 1,
+                backgroundColor: 'rgba(255, 251, 16, 0.49)'
+            });
+    })
+    .catch(error => {
+        console.error(error);
+    });
+}
+
+
+/**
+ * Alternate dropdownOptionSelected method to work with inputted Pokemon,
+ * only for use with localStorage.
+ */
+function loadButtonMethod(savedMon){
+    // Gets the loaded Pokemon
+    let dropdownMon = savedMon;
     console.log(dropdownMon + " element value");
     let pokeName = dropdownMon.toString();
     console.log(pokeName + " string");

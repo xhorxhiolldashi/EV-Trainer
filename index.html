@@ -38,13 +38,15 @@
     <p> EV Trainer </p>
     <p id = "tut"> For a brief tutorial on the tool and/or an explanation of EVs, 
         click <a href = "/tutorial.html">here</a>.</p>
+
+        
     </section>
     
     <!-- This section will be in the center. This section will be 
      replaced once the dropdown or save button is fulfilled by another 
      section containing the pokemon and its stats and stuff -->
     <section id = "loadupWindow">
-        <p> Choose a Pokemon from the dropdown to start or <a href = "/saved">load</a> a saved Pokemon (wip).</p>
+        <p> Choose a Pokemon from the dropdown to start or load a saved Pokemon (wip).</p>
     
         <!-- Dropdown for selecting pokemon -->
         <select name= "monDropdown" id = "monDropdown" class="form-select mb-3" style = "width: 50vw">
@@ -53,14 +55,15 @@
 
         <div>
         <input type = "button" value = "Let's Build" id = "letsBuild" name = "letsBuild" class = "btn btn-primary rounded">
-        <a href = "/saved.html">
         <input type = "button" value = "Load Saved Pokemon (wip)" id = "loadSaved" name = "loadSavedButton" class="btn btn-secondary rounded">
         </a>
-        <span id = loadButtonPressed></span>
         </div>
-    
    
     </section>
+    
+     <span id = loadButtonPressed>
+                <!-- Saved mons should go here -->
+            </span>
 </div>
 
     <section id = "evChart" style = "display: none;">
