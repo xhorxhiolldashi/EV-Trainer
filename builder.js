@@ -112,7 +112,7 @@ confirm("Go to home page? You will lose any unsaved progress.");
     // user clicked ok
   window.location.reload();
   }
-  // do nothing
+  // do nothing if cancel
 })
 
 
