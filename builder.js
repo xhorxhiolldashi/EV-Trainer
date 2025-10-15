@@ -1,32 +1,5 @@
 "use strict";
 
-// Media tags for smaller screens
-@media (max-width: 600px) {
-  #evWindow, #evChart, #evContainer, #battleContainer, #replaceWithMon {
-    position: relative !important;
-    top: auto !important;
-    right: auto !important;
-    width: 95% !important;
-    max-width: 95% !important;
-    margin: 10px auto !important;
-  }
-
-  #evChart {
-    flex-direction: column !important;
-  }
-
-  #replaceWithSprite {
-    width: 80% !important;
-    height: auto !important;
-  }
-
-  #whatTrain, #chooseHealth, #chooseAtk, #chooseDef, #chooseSpa, #chooseSpDef, #chooseSpe {
-    display: block !important;
-    width: 100% !important;
-    margin-bottom: 10px !important;
-  }
-}
-
 // Populate dropdown immediately upon site load
 populateDropdown();
 
