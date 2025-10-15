@@ -1,5 +1,4 @@
 "use strict";
-
 // Populate dropdown immediately upon site load
 populateDropdown();
 
